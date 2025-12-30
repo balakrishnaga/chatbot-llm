@@ -1,0 +1,20 @@
+/* Custom Bootstrap Overrides */
+
+:root {
+    --bs-primary: #1a73e8;
+    --bs-primary-rgb: 26, 115, 232;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: #1765cc;
+    --bs-btn-hover-border-color: #1765cc;
+}
+
+/* Add any other custom styles here */
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
