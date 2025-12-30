@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chatbot LLM
+
+A multi-provider AI chatbot built with Next.js, featuring a clean, responsive UI powered by Bootstrap. This application supports various LLM providers including OpenAI, Groq, and Hugging Face.
+
+## Features
+
+- **Multi-Provider Support**: Easily switch between Groq, OpenAI, and Hugging Face.
+- **Responsive Design**: Modern chat interface with aligned message bubbles (User right, Bot left).
+- **Customizable**: Extend and override Bootstrap styles via `custom-bootstrap.css`.
+- **Fast and Efficient**: Leveraging Next.js Server Actions and API routes.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/)
+- **UI/Styling**: [Bootstrap 5](https://getbootstrap.com/), Vanilla CSS
+- **Languages**: TypeScript, React
+- **LLM APIs**: Groq, OpenAI, Hugging Face Inference API
 
 ## Getting Started
 
-First, run the development server:
+### 1. Installation
+
+```bash
+npm install
+```
+
+### 2. Configuration
+
+Create a `.env` file in the root directory and add your API keys.
+
+```env
+# Select active LLM
+NEXT_PUBLIC_LLM_PROVIDER=groq
+
+# Tokens
+OPENAI_API_KEY=your_openai_key
+GROQ_API_KEY=your_groq_key
+HF_API_KEY=your_huggingface_key
+
+# Models
+OPENAI_MODEL=gpt-3.5-turbo
+GROQ_MODEL=llama-3.3-70b-versatile
+HF_MODEL=mistralai/Mistral-7B-Instruct-v0.2
+```
+
+### 3. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/components/ChatBox.tsx`: The main chat interface component.
+- `src/app/api/chat/route.ts`: API route handling LLM interaction.
+- `src/lib/llm/`: Strategy pattern implementation for different LLM providers.
+- `src/app/custom-bootstrap.css`: Custom Bootstrap overrides and theme colors.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
