@@ -1,3 +1,8 @@
+export interface Message {
+    role: "user" | "bot";
+    content: string;
+}
+
 export interface LLM {
-    chat(prompt: string): Promise<string>;
+    chat(messages: Message[]): Promise<Message>;
 }

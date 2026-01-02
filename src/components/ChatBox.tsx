@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
+import { Message } from "@/lib/llm/types";
 
-interface Message {
-    role: "user" | "bot";
-    content: string;
-}
+
 
 export default function ChatBox() {
     const [input, setInput] = useState("");
@@ -13,18 +11,18 @@ export default function ChatBox() {
     async function sendMessage() {
         if (!input.trim()) return;
 
-        const userInput = input;
-        const userMessage: Message = { role: "user", content: userInput };
+        const userMessage: Message = { role: "user", content: input };
+        const updatedMessages = [...messages, userMessage];
 
         // Update user message immediately
-        setMessages((prev) => [...prev, userMessage]);
+        setMessages(updatedMessages);
         setInput("");
 
         try {
             const res = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userInput }),
+                body: JSON.stringify({ messages: updatedMessages }),
             });
 
             const data = await res.json();
@@ -41,59 +39,59 @@ export default function ChatBox() {
         <div className="container mt-4">
             <h3 className="mb-4">AI Chatbot</h3>
             <div
-                className="rounded p-3 mb-2 d-flex flex-column"
+                className="d-flex flex-column shadow-lg glass-card"
                 style={{
-                    height: 500,
-                    overflowY: "auto",
-                    borderRadius: "12px",
-                    border: "1px solid #c5c9cdff"
+                    height: "80vh",
+                    overflow: "hidden"
                 }}
             >
-                {messages.length === 0 && (
-                    <div className="text-center text-muted my-auto">
-                        Start a conversation!
-                    </div>
-                )}
-                {messages.map((m, i) => (
-                    <div
-                        key={i}
-                        className={`d-flex mb-2 ${m.role === "user" ? "justify-content-end" : "justify-content-start"}`}
-                    >
-                        <div
-                            className={`p-2 px-3 rounded-pill ${m.role === "user"
-                                ? "bg-white text-dark shadow-sm border"
-                                : "bg-white text-dark"
-                                }`}
-                            style={{
-                                maxWidth: "75%",
-                                borderBottomRightRadius: m.role === "user" ? "4px" : "12px",
-                                borderBottomLeftRadius: m.role === "bot" ? "4px" : "12px"
-                            }}
-                        >
-                            {m.content}
+                <div
+                    className="p-3 d-flex flex-column flex-grow-1"
+                    style={{ overflowY: "auto" }}
+                >
+                    {messages.length === 0 && (
+                        <div className="text-center text-muted my-auto">
+                            Start a conversation!
                         </div>
-                    </div>
-                ))}
-            </div>
+                    )}
+                    {messages.map((m, i) => (
+                        <div
+                            key={i}
+                            className={`d-flex mb-2 ${m.role === "user" ? "justify-content-end" : "justify-content-start"}`}
+                        >
+                            <div
+                                className={`p-2 px-3 ${m.role === "user"
+                                    ? "rounded-pill shadow-sm bg-light text-dark border-0"
+                                    : "text-dark"
+                                    }`}
+                                style={{
+                                    maxWidth: "75%",
+                                    borderBottomRightRadius: m.role === "user" ? "4px" : "12px",
+                                    borderBottomLeftRadius: m.role === "bot" ? "4px" : "12px"
+                                }}
+                            >
+                                {m.content}
+                            </div>
+                        </div>
+                    ))}
+                </div>
 
-            <form
-                className="input-group shadow-sm"
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    sendMessage();
-                }}
-            >
-                <input
-                    className="form-control"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                    aria-label="Chat input"
-                />
-                <button className="btn btn-primary px-4" type="submit">
-                    Send
-                </button>
-            </form>
+                <form
+                    className="input-group glass-footer"
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        sendMessage();
+                    }}
+                >
+                    <input
+                        className="form-control border-0 glass-input"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Type your message..."
+                        aria-label="Chat input"
+                    />
+                </form>
+            </div>
         </div>
     );
 }

@@ -1,7 +1,7 @@
-import { LLM } from "./types";
+import { LLM, Message } from "./types";
 
 export class GroqLLM implements LLM {
-    async chat(prompt: string): Promise<string> {
+    async chat(messages: Message[]): Promise<Message> {
         const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -10,11 +10,11 @@ export class GroqLLM implements LLM {
             },
             body: JSON.stringify({
                 model: process.env.GROQ_MODEL,
-                messages: [{ role: "user", content: prompt }],
+                messages: messages.map(m => ({ role: m.role === "bot" ? "assistant" : "user", content: m.content })),
             }),
         });
 
         const data = await res.json();
-        return data.choices[0].message.content;
+        return data.choices?.[0]?.message?.content || "No response from Groq";
     }
 }

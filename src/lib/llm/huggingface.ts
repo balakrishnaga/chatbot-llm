@@ -1,7 +1,11 @@
-import { LLM } from "./types";
+import { LLM, Message } from "./types";
 
 export class HuggingFaceLLM implements LLM {
-    async chat(prompt: string): Promise<string> {
+    async chat(messages: Message[]): Promise<Message> {
+        const prompt = messages
+            .map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
+            .join("\n") + "\nAssistant:";
+
         const res = await fetch(
             `https://api-inference.huggingface.co/models/${process.env.HF_MODEL}`,
             {
