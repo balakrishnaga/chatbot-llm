@@ -2,6 +2,8 @@
 
 A multi-provider AI chatbot built with Next.js, featuring a clean, responsive UI powered by Bootstrap. This application supports various LLM providers including OpenAI, Groq, and Hugging Face.
 
+<img width="1226" height="611" alt="Screenshot 2026-01-02 at 12 00 18 PM" src="https://github.com/user-attachments/assets/83125552-a009-436f-9ed4-bf299c6320ed" />
+
 <img width="1222" height="611" alt="Screenshot 2026-01-02 at 11 23 45 AM" src="https://github.com/user-attachments/assets/a2222c0e-d629-4363-90f1-1725fd73d9b7" />
 
 ## Features
