@@ -24,7 +24,7 @@ export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
     }
 
     const response = await fetch(
-        `https://router.huggingface.co/hf-inference/models/${model}`,
+        `https://api-inference.huggingface.co/models/${model}`,
         {
             headers: {
                 "Authorization": `Bearer ${hfToken}`,
