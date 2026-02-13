@@ -1,4 +1,5 @@
 import { getDb } from './db';
+import { HfInference } from '@huggingface/inference';
 
 // Embedding thickness - how many dimensions our vector has
 
@@ -13,7 +14,7 @@ export interface DocumentChunk {
 }
 
 /**
- * Generate embeddings using HuggingFace Router API
+ * Generate embeddings using official HuggingFace SDK
  */
 export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
     const hfToken = process.env.HF_API_KEY;
@@ -23,26 +24,20 @@ export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
         throw new Error("HuggingFace API Key (HF_API_KEY) is missing in .env");
     }
 
-    const response = await fetch(
-        `https://api-inference.huggingface.co/models/${model}`,
-        {
-            headers: {
-                "Authorization": `Bearer ${hfToken}`,
-                "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify({
-                inputs: texts
-            }),
-        }
-    );
+    const hf = new HfInference(hfToken);
 
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`HuggingFace Embeddings API error: ${JSON.stringify(error)}`);
+    try {
+        const output = await hf.featureExtraction({
+            model: model,
+            inputs: texts,
+        });
+
+        // The SDK returns a multidimensional array which matches our number[][] requirement
+        return output as number[][];
+    } catch (error: any) {
+        console.error("HuggingFace SDK Error:", error);
+        throw new Error(`Failed to generate embeddings: ${error.message}`);
     }
-
-    return response.json();
 }
 
 /**
